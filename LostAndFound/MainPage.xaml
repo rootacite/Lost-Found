@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="LostAndFound.MainPage"
+             xmlns:d="clr-namespace:LostAndFound"
+             x:DataType="d:MainPageDataModel"
+             >
+
+    <Grid
+        RowDefinitions="45, 45, 1.5, *,45,10"
+        ColumnDefinitions=".18*, .64*, .18*"
+        RowSpacing="8"
+        ColumnSpacing="8"
+        Padding="10">
+
+        <Entry 
+            Placeholder="搜索描述或标题" 
+            Grid.Row="0"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Text="{Binding EntryText1}"
+            />
+
+        <Button 
+            Style="{StaticResource ButtonOutline}"
+            Text="搜索"
+            Grid.Row="0"
+            Grid.Column="2"/>
+
+        <Button
+            Style="{StaticResource ButtonOutline}"
+            x:Name="ShowCode"
+            Command="{Binding Click1Command}"
+            IsEnabled="True"
+            Text="显示我的识别码"
+            Grid.Row="1"
+            Grid.Column="1"/>
+
+        <Image
+            Grid.Row="2"
+            Grid.ColumnSpan="3"
+            BackgroundColor="Gray"/>
+        
+        <CollectionView 
+            Grid.Row="3"
+            Grid.RowSpan="3"
+            Grid.ColumnSpan="3"
+            HorizontalOptions="Center"
+            x:Name="CollList"
+            VerticalScrollBarVisibility="Never">
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="d:ItemInfo">
+                    <Grid Padding="5">
+                        <Frame HeightRequest="125"
+                               Padding="0"
+                               Style="{StaticResource CardView}">
+
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer
+                                        CommandParameter="{Binding .}"
+                                        Command="{Binding Source={RelativeSource AncestorType={Type d:MainPageDataModel}}, Path=ClickItemCommand}"
+                                    />
+                            </Frame.GestureRecognizers>
+                            <Grid ColumnDefinitions="125,*">
+
+
+                                <Image Source="{Binding Icon}"
+                                   Aspect="AspectFill"
+                                   WidthRequest="125"
+                                   HeightRequest="125"/>
+
+                                <VerticalStackLayout Grid.Column="1"
+                                                     Padding="10"
+                                                     VerticalOptions="Center">
+                                    <Label Text="{Binding Name}"
+                                           Style="{StaticResource LargeLabel}"/>
+                                    <Label Text="{Binding Description}"
+                                           TextColor="Gray"
+                                           Style="{StaticResource SmallLabel}"/>
+                                </VerticalStackLayout>
+
+                            </Grid>
+                        </Frame>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+            
+        </CollectionView>
+
+        <Grid Padding="8,0" Grid.ColumnSpan="3" Grid.Row="4" BackgroundColor="Transparent">
+
+            <Image Source="bottom_bar.png" Opacity="0.65" HorizontalOptions="Center"/>
+         
+        </Grid>
+
+    </Grid>
+
+</ContentPage>

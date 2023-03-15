@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="LostAndFound.DetailPage"
+             Title="DetailPage">
+    <VerticalStackLayout>
+        <StackLayout Padding="10" Spacing="10">
+            <Image Background="white" HeightRequest="340" Source="demo_qr.png"/>
+            <Label 
+            Text="扫描识别码后登记物品"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" 
+                FontSize="24"/>
+        </StackLayout>
+    </VerticalStackLayout>
+</ContentPage>
