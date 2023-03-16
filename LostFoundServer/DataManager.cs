@@ -38,6 +38,8 @@ class DataManager
         }
     }
 
+    public void Delete(string Key) => Data.Remove(Key);
+
     public string Serialize
     {
         get
