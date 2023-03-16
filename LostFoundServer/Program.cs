@@ -9,11 +9,31 @@ namespace LostFoundServer;
 
 class Program
 {
-    private static DataManager Manager = new DataManager();
+    private static DataManager Data = new DataManager();
+    private static NetworkManager Network = new NetworkManager();
     public static void Main(string[] argv)
     {
-        Manager.Load();
+        Data.Load();
 
-        Manager.Print();
+        Data.Print();
+
+        Network.Packet += (s) =>
+        {
+            return $"{s} Received\n";
+        };
+        _ = Network.Run();
+
+        while (true)
+        {
+            string? mc = Console.ReadLine();
+
+            if(mc != null)
+            {
+                if (mc == "q")
+                {
+                    Network.listener.Stop();
+                }
+            }
+        }
     }
 }

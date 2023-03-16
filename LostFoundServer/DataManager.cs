@@ -8,17 +8,36 @@ using System.Threading.Tasks;
 namespace LostFoundServer;
 class DataStructure
 {
-    int Command;
+    public int Command;
     //可以是 0，1，2，3，4 0:读取 1:写入 2:表示Payload是一个Base64编码的文件，需要被保存 3:删除名称为Name的数据 4:删除文件名为Name的文件
-    string Name;
+    public string Name;
     //数据的名称
-    string Payload;
+    public string Payload;
     //负载数据
 }
 
 class DataManager
 {
     public Dictionary<string, string> Data = new Dictionary<string, string>(); //成对保存数据
+
+    public bool Exists(string Key) => Data.ContainsKey(Key);
+
+    public string Get(string Key) => JsonConvert.SerializeObject(new DataStructure() { Command = 0, Name = Key, Payload = Data[Key] });
+
+    public bool Set(string Key, string value)
+    {
+        if (Exists(Key))
+        {
+            Data[Key] = value;
+            return true;  //true代表此次进行的是更新操作
+        }
+        else
+        {
+            Data.Add(Key, value);
+            return false; //false代表此次进行的是添加操作
+        }
+    }
+
     public string Serialize
     {
         get
