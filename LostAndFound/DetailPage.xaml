@@ -2,15 +2,45 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="LostAndFound.DetailPage"
-             Title="DetailPage">
-    <VerticalStackLayout>
-        <StackLayout Padding="10" Spacing="10">
-            <Image Background="white" HeightRequest="340" Source="demo_qr.png"/>
-            <Label 
-            Text="扫描识别码后登记物品"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" 
-                FontSize="24"/>
-        </StackLayout>
+             Title="DetailPage"
+             xmlns:d="clr-namespace:LostAndFound"
+             x:DataType="d:DetailPageDataModel">
+    <VerticalStackLayout  Padding="15" Spacing="8" HorizontalOptions="Center" BackgroundColor="#F5F5F5">
+        <Frame>
+            <Image Source="{Binding Icon}"
+                                   Aspect="AspectFill"
+                                   WidthRequest="200"
+                                   HeightRequest="200"
+            />
+        </Frame>
+
+        <Frame>
+            <VerticalStackLayout VerticalOptions="Center" Spacing="12" Padding="15">
+                <Label Text="{Binding Name}"
+                                           Style="{StaticResource LargeLabel}"/>
+                <Label Text="{Binding Description}"
+                                           TextColor="Gray"
+                                           Style="{StaticResource MediumLabel}"/>
+            </VerticalStackLayout>
+        </Frame>
+        
+
+        <Image
+            MinimumHeightRequest="1.5"
+            BackgroundColor="#DADADA"/>
+
+        <Frame HeightRequest="100">
+            <HorizontalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="35">
+                <Button 
+            Style="{StaticResource ButtonOutline}"
+            Text="认领"
+                    WidthRequest="135"/>
+                <Button 
+            Style="{StaticResource ButtonOutline}"
+            Text="标记"
+                      WidthRequest="135"/>
+            </HorizontalStackLayout>
+        </Frame>
+
     </VerticalStackLayout>
 </ContentPage>

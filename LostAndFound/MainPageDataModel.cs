@@ -21,10 +21,25 @@ namespace LostAndFound
            await MainPage.Instance.Navigation.PushAsync(new DetailPage());
         }
 
+        /// <summary>
+        /// 点击列表中项目触发的事件
+        /// </summary>
+        /// <param name="Info"></param>
         [RelayCommand]
         async void OnClickItem(ItemInfo Info)
         {
-            await MainPage.Instance.DisplayAlert(Info.Name, Info.Description, "OK");
+            //加载详情页
+            var DP = new DetailPage();
+            var DPD = new DetailPageDataModel();
+
+            DPD.Description = Info.Description;
+            DPD.Name = Info.Name;
+            DPD.Icon = Info.Icon;
+
+            DP.BindingContext = DPD;
+
+            //显示详情页，并等待用户将其关闭
+            await MainPage.Instance.Navigation.PushAsync(DP);
         }
 
         [ObservableProperty]

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "LostFoundServer": {
+      "commandName": "Project",
+      "remoteDebugEnabled": false
+    }
+  }
+}
