@@ -25,7 +25,9 @@
             Style="{StaticResource ButtonOutline}"
             Text="搜索"
             Grid.Row="0"
-            Grid.Column="2"/>
+            Grid.Column="2"
+            Command="{Binding Click1Command}"
+            />
 
 
         <Image

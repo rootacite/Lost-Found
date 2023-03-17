@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace LostFoundServer;
-class DataStructure
+struct DataStructure
 {
     public int Command;
     //可以是 0，1，2，3，4 0:读取 1:写入 2:表示Payload是一个Base64编码的文件，需要被保存 3:删除名称为Name的数据 4:删除文件名为Name的文件

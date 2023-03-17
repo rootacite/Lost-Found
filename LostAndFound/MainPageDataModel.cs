@@ -13,12 +13,31 @@ namespace LostAndFound
 {
     public partial class MainPageDataModel : ObservableObject
     {
+        public async Task TakePhoto()
+        {
+            if (MediaPicker.Default.IsCaptureSupported)
+            {
+                FileResult photo = await MediaPicker.Default.CapturePhotoAsync();
+
+                if (photo != null)
+                {
+                    // save the file into local storage
+                    string localFilePath = Path.Combine(FileSystem.CacheDirectory, photo.FileName);
+
+                    using Stream sourceStream = await photo.OpenReadAsync();
+                    using FileStream localFileStream = File.OpenWrite(localFilePath);
+
+                    await sourceStream.CopyToAsync(localFileStream);
+                }
+            }
+        }
+
         public List<ItemInfo> itemInfos { get; set; } = new List<ItemInfo>();
 
         [RelayCommand]
         async void OnClick1()
         {
-           await MainPage.Instance.Navigation.PushAsync(new DetailPage());
+            await TakePhoto();
         }
 
         /// <summary>
