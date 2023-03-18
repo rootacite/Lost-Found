@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net.Sockets;
 using Newtonsoft.Json;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace LostFoundServer;
 
@@ -59,11 +58,10 @@ class Program
                     {
                         //保存文件命令
                         //Locate : ~/host/webapps/ROOT
-
                         byte[] OriginData = Convert.FromBase64String(ds.Payload);
-                        File.WriteAllBytes(@"~/host/webapps/ROOT/" + ds.Name, OriginData);
+                        File.WriteAllBytes(ds.Name, OriginData);
 
-                        Console.WriteLine($"Save {ds.Name} to ~/host/webapps/ROOT/.");
+                        Console.WriteLine($"Save {ds.Name} to /home/shiyuanli/host/webapps/ROOT/.");
                         return JsonConvert.SerializeObject(new DataStructure() { Command = 0, Name = ds.Name, Payload = "Saved" }) + "\n";
                     }
                 case 3:
@@ -76,9 +74,9 @@ class Program
                     }
                 case 4:
                     {
-                        File.Delete(@"~/host/webapps/ROOT/" + ds.Name);
+                        File.Delete(ds.Name);
 
-                        Console.WriteLine($"Deleted {ds.Name} from ~/host/webapps/ROOT/.");
+                        Console.WriteLine($"Deleted {ds.Name} from /home/shiyuanli/host/webapps/ROOT/.");
                         return JsonConvert.SerializeObject(new DataStructure() { Command = 0, Name = ds.Name, Payload = "Deleted" }) + "\n";
                     }
                 default:
