@@ -24,6 +24,7 @@ class Program
                 case 0:
                     {
                         //读命令
+
                         if(!Data.Exists(ds.Name))
                         {
                             //如果不存在该数据，则直接返回
@@ -38,6 +39,7 @@ class Program
                 case 1:
                     {
                         //写命令
+
                         bool r = Data.Set(ds.Name, ds.Payload);
                         Data.Save(); //更新文件数据
 
