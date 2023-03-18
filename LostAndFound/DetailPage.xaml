@@ -30,15 +30,15 @@
             BackgroundColor="#DADADA"/>
 
         <Frame HeightRequest="100">
-            <HorizontalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="35">
+            <HorizontalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="25">
                 <Button 
             Style="{StaticResource ButtonOutline}"
             Text="认领"
-                    WidthRequest="135"/>
+                    WidthRequest="120"/>
                 <Button 
             Style="{StaticResource ButtonOutline}"
             Text="标记"
-                      WidthRequest="135"/>
+                      WidthRequest="120"/>
             </HorizontalStackLayout>
         </Frame>
 

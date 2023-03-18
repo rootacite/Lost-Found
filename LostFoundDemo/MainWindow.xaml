@@ -7,7 +7,12 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" ResizeMode="NoResize">
     <Grid>
-        <TextBlock FontSize="24" HorizontalAlignment="Left" Margin="111,136,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top"/>
+        <TextBlock FontSize="24" HorizontalAlignment="Left" Margin="4,61,0,0" Width="200" TextAlignment="Right" TextWrapping="Wrap" Text="Command:" VerticalAlignment="Top"/>
+        <TextBlock FontSize="24" HorizontalAlignment="Left" Margin="4,131,0,0" Width="200" TextAlignment="Right" TextWrapping="Wrap" Text="Name:" VerticalAlignment="Top" />
+        <TextBlock FontSize="24" HorizontalAlignment="Left" Margin="4,200,0,0" Width="200" TextAlignment="Right" TextWrapping="Wrap" Text="Payload:" VerticalAlignment="Top"/>
+        <TextBox FontSize="24" HorizontalAlignment="Left" Margin="216,61,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="250"/>
+        <TextBox FontSize="24" HorizontalAlignment="Left" Margin="216,131,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="250"/>
+        <TextBox FontSize="16" HorizontalAlignment="Left" Margin="216,200,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="560" Height="200" AcceptsReturn="True" VerticalScrollBarVisibility="Visible"/>
 
     </Grid>
 </Window>
