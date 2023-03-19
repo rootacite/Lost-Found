@@ -18,6 +18,6 @@ namespace LostAndFound
         public string description;
 
         [ObservableProperty]
-        public string icon;
+        public ImageSource icon;
     }
 }

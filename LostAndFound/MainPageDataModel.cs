@@ -1,6 +1,4 @@
-﻿
-using Microsoft.Maui.Controls.Platform;
-using System;
+﻿  
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +6,14 @@ using System.Threading.Tasks;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System.Drawing;
+using Android.OS;
+using SkiaSharp;
+using Android.Hardware.Lights;
+using static Android.Icu.Text.ListFormatter;
+using Newtonsoft.Json;
+using System.Diagnostics.Metrics;
+using System.Collections.ObjectModel;
 
 namespace LostAndFound
 {
@@ -21,23 +27,87 @@ namespace LostAndFound
 
                 if (photo != null)
                 {
-                    // save the file into local storage
-                    string localFilePath = Path.Combine(FileSystem.CacheDirectory, photo.FileName);
-
                     using Stream sourceStream = await photo.OpenReadAsync();
-                    using FileStream localFileStream = File.OpenWrite(localFilePath);
+                    System.Diagnostics.Debug.WriteLine(sourceStream.Length.ToString());
 
-                    await sourceStream.CopyToAsync(localFileStream);
+                    using SKBitmap bitmap = SKBitmap.Decode(sourceStream);
+
+                    using SKBitmap scaledBitmap = bitmap.Resize(new SKImageInfo(600, 600), SKFilterQuality.Medium);
+                    using SKImage scaledImage = SKImage.FromBitmap(scaledBitmap);
+
+
+                    System.Diagnostics.Debug.WriteLine($"Rgion Pic Width : {scaledImage.Width} Height : {scaledImage.Height}");
+
+                    using (SKData dt= scaledImage.Encode(SKEncodedImageFormat.Jpeg, 50))
+                    {
+                        var b_dt = dt.ToArray();
+                        System.Diagnostics.Debug.WriteLine($"Data Length : {b_dt.Length}");
+
+                        var reply = await ClientMobel.GetReply(new DataStructure()
+                        {
+                            Command = 2,
+                            Name = photo.FileName,
+                            Payload = Convert.ToBase64String(b_dt)
+                        });
+
+                        itemInfos.Add(new ItemInfo()
+                        {
+                            Icon = "http://59.110.225.239/" + photo.FileName,
+                            Name = photo.FileName,
+                            Description = "None"
+                        });
+
+                        await ClientMobel.GetReply(new DataStructure()
+                        {
+                            Command = 1,
+                            Name = "Items",
+                            Payload = JsonConvert.SerializeObject(itemInfos)
+                        });
+                    }
                 }
             }
         }
 
-        public List<ItemInfo> itemInfos { get; set; } = new List<ItemInfo>();
+        public ObservableCollection<ItemInfo> itemInfos { get; set; } = new ObservableCollection<ItemInfo>();
 
         [RelayCommand]
         async void OnClick1()
         {
             await TakePhoto();
+        }
+
+
+        [RelayCommand]
+        async void OnFresh()
+        {
+            try
+            {
+                DataStructure reply = await ClientMobel.GetReply(new DataStructure()
+                {
+                    Command = 0,
+                    Name = "Items",
+                    Payload = "0"
+                });
+
+                if (reply.Command == 1)
+                {
+                    await MainPage.Instance.DisplayAlert("Messag", "No Data", "OK");
+                    return;
+                }
+                else
+                {
+                    ObservableCollection<ItemInfo> lib_sr = JsonConvert.DeserializeObject<ObservableCollection<ItemInfo>>(reply.Payload);
+                    itemInfos.Clear();
+                    foreach (var i in lib_sr)
+                    {
+                        itemInfos.Add(i);
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                await MainPage.Instance.DisplayAlert("Error", ex.Message, "Close");
+            }
         }
 
         /// <summary>

@@ -26,7 +26,7 @@
             Text="搜索"
             Grid.Row="0"
             Grid.Column="2"
-            Command="{Binding Click1Command}"
+          
             />
 
 
@@ -34,58 +34,62 @@
             Grid.Row="1"
             Grid.ColumnSpan="3"
             BackgroundColor="Gray"/>
-        
-        <CollectionView 
+
+            <CollectionView 
             Grid.Row="2"
             Grid.RowSpan="3"
             Grid.ColumnSpan="3"
             HorizontalOptions="Center"
             x:Name="CollList"
-            VerticalScrollBarVisibility="Never">
+            VerticalScrollBarVisibility="Never"
+                ItemsSource="{Binding itemInfos}">
 
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="d:ItemInfo">
-                    <Grid Padding="5">
-                        <Frame HeightRequest="125"
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="d:ItemInfo">
+                        <Grid Padding="5">
+                            <Frame HeightRequest="125"
                                Padding="0"
                                Style="{StaticResource CardView}">
 
-                            <Frame.GestureRecognizers>
-                                <TapGestureRecognizer
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer
                                         CommandParameter="{Binding .}"
                                         Command="{Binding Source={RelativeSource AncestorType={Type d:MainPageDataModel}}, Path=ClickItemCommand}"
                                     />
-                            </Frame.GestureRecognizers>
-                            <Grid ColumnDefinitions="125,*">
+                                </Frame.GestureRecognizers>
+                                <Grid ColumnDefinitions="125,*">
 
 
-                                <Image Source="{Binding Icon}"
-                                   Aspect="AspectFill"
-                                   WidthRequest="125"
-                                   HeightRequest="125"/>
+                                    <Image 
+                                        Source="{Binding Icon}"
+                                        Aspect="AspectFill"
+                                        WidthRequest="125"
+                                        HeightRequest="125"
+                                        />
 
-                                <VerticalStackLayout Grid.Column="1"
+                                    <VerticalStackLayout Grid.Column="1"
                                                      Padding="10"
                                                      VerticalOptions="Center">
-                                    <Label Text="{Binding Name}"
+                                        <Label Text="{Binding Name}"
                                            Style="{StaticResource LargeLabel}"/>
-                                    <Label Text="{Binding Description}"
+                                        <Label Text="{Binding Description}"
                                            TextColor="Gray"
                                            Style="{StaticResource SmallLabel}"/>
-                                </VerticalStackLayout>
+                                    </VerticalStackLayout>
 
-                            </Grid>
-                        </Frame>
-                    </Grid>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-            
-        </CollectionView>
+                                </Grid>
+                            </Frame>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
 
+            </CollectionView>
+      
         <Grid Padding="8,0" Grid.ColumnSpan="3" Grid.Row="3" BackgroundColor="Transparent">
 
             <Image Source="bottom_bar.png" Opacity="0.65" HorizontalOptions="Center"/>
-         
+            <Button Text="刷新" WidthRequest="60" Margin="-200,0,0,0" Command="{Binding FreshCommand}"/>
+            <Button Text="添加" WidthRequest="60" Margin="0,0,0,0"   Command="{Binding Click1Command}"/>
         </Grid>
 
     </Grid>

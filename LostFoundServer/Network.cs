@@ -73,8 +73,9 @@ class NetworkManager
             catch (Exception ex)
             {
                 //出现异常则放弃此客户端
-                Console.WriteLine(ex.ToString());
-                Console.WriteLine($"Client IP:{cl.Client.RemoteEndPoint} is Disconnected.");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"[Client IP:{cl.Client.RemoteEndPoint} is Disconnected.]");
+                Console.ForegroundColor = ConsoleColor.White;
                 break;
             }
         }
@@ -91,6 +92,9 @@ class NetworkManager
                 //接受客户端
                 TcpClient client = await listener.AcceptTcpClientAsync();
                 //开启一个新的线程处理这个客户端
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"New Client Connected, IP:{client.Client.RemoteEndPoint}");
+                Console.ForegroundColor = ConsoleColor.White;
                 _ = Task.Run(() => ClientProcess(client));
             }
             catch(Exception ex)

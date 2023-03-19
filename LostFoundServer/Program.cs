@@ -32,7 +32,7 @@ class Program
                         }
 
                         var ret = Data.Get(ds.Name);
-                        Console.WriteLine($"Gotten Item : {ds.Name}, Returned {ret}");
+                        Console.WriteLine($"[Gotten Item : {ds.Name}, Returned {ret}]");
                         return ret + "\n";
                     }
 
@@ -46,13 +46,13 @@ class Program
                         if (r)
                         {
                             //更新操作
-                            Console.WriteLine($"Updated Data : {ds.Name} to {ds.Payload}");
+                            Console.WriteLine($"[Updated Data : {ds.Name} to {ds.Payload}]");
                             return JsonConvert.SerializeObject(new DataStructure() { Command = 1, Name = ds.Name, Payload = "Updated" }) + "\n";
                         }
                         else
                         {
                             //添加操作
-                            Console.WriteLine($"Added New Data : {ds.Name} with {ds.Payload}");
+                            Console.WriteLine($"[Added New Data : {ds.Name} with {ds.Payload}]");
                             return JsonConvert.SerializeObject(new DataStructure() { Command = 0, Name = ds.Name, Payload = "Added" }) + "\n";
                         }
                     }
@@ -63,7 +63,7 @@ class Program
                         byte[] OriginData = Convert.FromBase64String(ds.Payload);
                         File.WriteAllBytes(ds.Name, OriginData);
 
-                        Console.WriteLine($"Save {ds.Name} to /home/shiyuanli/host/webapps/ROOT/.");
+                        Console.WriteLine($"[Save {ds.Name} to /home/shiyuanli/host/webapps/ROOT/.]");
                         return JsonConvert.SerializeObject(new DataStructure() { Command = 0, Name = ds.Name, Payload = "Saved" }) + "\n";
                     }
                 case 3:
@@ -71,14 +71,14 @@ class Program
                         //删除命令
                         Data.Delete(ds.Name);
                         Data.Save();
-                        Console.WriteLine($"Deleted Data : {ds.Name}");
+                        Console.WriteLine($"[Deleted Data : {ds.Name}]");
                         return JsonConvert.SerializeObject(new DataStructure() { Command = 0, Name = ds.Name, Payload = "Deleted" }) + "\n";
                     }
                 case 4:
                     {
                         File.Delete(ds.Name);
 
-                        Console.WriteLine($"Deleted {ds.Name} from /home/shiyuanli/host/webapps/ROOT/.");
+                        Console.WriteLine($"[Deleted {ds.Name} from /home/shiyuanli/host/webapps/ROOT/.]");
                         return JsonConvert.SerializeObject(new DataStructure() { Command = 0, Name = ds.Name, Payload = "Deleted" }) + "\n";
                     }
                 default:
