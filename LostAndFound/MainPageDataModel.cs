@@ -14,12 +14,17 @@ using static Android.Icu.Text.ListFormatter;
 using Newtonsoft.Json;
 using System.Diagnostics.Metrics;
 using System.Collections.ObjectModel;
+using System.Runtime.Intrinsics.Arm;
 
 namespace LostAndFound
 {
     public partial class MainPageDataModel : ObservableObject
     {
-        public async Task TakePhoto()
+
+        public ObservableCollection<ItemInfo> itemInfos { get; set; } = new ObservableCollection<ItemInfo>();
+
+        [RelayCommand]
+        async void OnClick1()
         {
             if (MediaPicker.Default.IsCaptureSupported)
             {
@@ -28,52 +33,18 @@ namespace LostAndFound
                 if (photo != null)
                 {
                     using Stream sourceStream = await photo.OpenReadAsync();
-                    System.Diagnostics.Debug.WriteLine(sourceStream.Length.ToString());
 
-                    using SKBitmap bitmap = SKBitmap.Decode(sourceStream);
+                    byte[] Data_load = new byte[sourceStream.Length];
 
-                    using SKBitmap scaledBitmap = bitmap.Resize(new SKImageInfo(600, 600), SKFilterQuality.Medium);
-                    using SKImage scaledImage = SKImage.FromBitmap(scaledBitmap);
+                    sourceStream.Read(Data_load, 0, (int)sourceStream.Length);
+                   
 
-
-                    System.Diagnostics.Debug.WriteLine($"Rgion Pic Width : {scaledImage.Width} Height : {scaledImage.Height}");
-
-                    using (SKData dt= scaledImage.Encode(SKEncodedImageFormat.Jpeg, 50))
-                    {
-                        var b_dt = dt.ToArray();
-                        System.Diagnostics.Debug.WriteLine($"Data Length : {b_dt.Length}");
-
-                        var reply = await ClientMobel.GetReply(new DataStructure()
-                        {
-                            Command = 2,
-                            Name = photo.FileName,
-                            Payload = Convert.ToBase64String(b_dt)
-                        });
-
-                        itemInfos.Add(new ItemInfo()
-                        {
-                            Icon = "http://59.110.225.239/" + photo.FileName,
-                            Name = photo.FileName,
-                            Description = "None"
-                        });
-
-                        await ClientMobel.GetReply(new DataStructure()
-                        {
-                            Command = 1,
-                            Name = "Items",
-                            Payload = JsonConvert.SerializeObject(itemInfos)
-                        });
-                    }
+                    await Task.Delay(500);
+                    await MainPage.Instance.Navigation.PushAsync(new ManwPage(Data_load), true);
+ 
+             
                 }
             }
-        }
-
-        public ObservableCollection<ItemInfo> itemInfos { get; set; } = new ObservableCollection<ItemInfo>();
-
-        [RelayCommand]
-        async void OnClick1()
-        {
-            await TakePhoto();
         }
 
 
@@ -117,6 +88,7 @@ namespace LostAndFound
         [RelayCommand]
         async void OnClickItem(ItemInfo Info)
         {
+
             //加载详情页
             var DP = new DetailPage();
             var DPD = new DetailPageDataModel();
@@ -128,7 +100,7 @@ namespace LostAndFound
             DP.BindingContext = DPD;
 
             //显示详情页，并等待用户将其关闭
-            await MainPage.Instance.Navigation.PushAsync(DP);
+            await MainPage.Instance.Navigation.PushAsync(DP, true);
         }
 
         [ObservableProperty]
@@ -136,7 +108,9 @@ namespace LostAndFound
 
         public MainPageDataModel()
         {
-
+            Instance = this;
         }
+
+        public static MainPageDataModel Instance { get; private set; }
     }
 }

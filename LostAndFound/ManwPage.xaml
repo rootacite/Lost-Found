@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="LostAndFound.ManwPage"
+             Title="ManwPage"
+             xmlns:d="clr-namespace:LostAndFound"
+             x:DataType="d:ManwPageDataModel"
+             >
+    <VerticalStackLayout  Padding="15" Spacing="8" HorizontalOptions="Center" BackgroundColor="#F5F5F5">
+        <Frame>
+            <Label Text="添加新的物品" FontSize="26"/>
+        </Frame>
+        
+        <Frame>
+            <Image Source="{Binding TcSource}" HeightRequest="200"/>
+        </Frame>
+
+        <Frame>
+            <Entry 
+            Placeholder="标题" 
+            Text="{Binding TitleModel}"
+            />
+        </Frame>
+
+        <Frame>
+            <Editor
+            Placeholder="描述" 
+            Text="{Binding DesModel}"
+            HeightRequest="160"
+            />
+        </Frame>
+
+
+        <Frame HeightRequest="100">
+            <HorizontalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="25">
+                <Button 
+                    Style="{StaticResource ButtonOutline}"
+                    Text="确定"
+                    WidthRequest="120"
+                    Command="{Binding TransmitCommand}"
+                    />
+               
+            </HorizontalStackLayout>
+        </Frame>
+    </VerticalStackLayout>
+</ContentPage>

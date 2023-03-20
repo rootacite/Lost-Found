@@ -6,11 +6,9 @@ public partial class DetailPage : ContentPage
 	{
 		InitializeComponent();
 
-		Loaded += (e, v) =>
-		{
-			//Òþ²Ø¶¥²¿µ¼º½À¸
-			NavigationPage.SetHasNavigationBar(this, false);
-			NavigationPage.SetBackButtonTitle(this, null);
-		};
+        //Òþ²Ø¶¥²¿µ¼º½À¸
+        NavigationPage.SetHasNavigationBar(this, false);
+        NavigationPage.SetBackButtonTitle(this, null);
+        
 	}
 }
