@@ -34,7 +34,8 @@
                 <Button 
             Style="{StaticResource ButtonOutline}"
             Text="认领"
-                    WidthRequest="120"/>
+                    WidthRequest="120"
+                    Command="{Binding ClaimCommand}"/>
                 <Button 
             Style="{StaticResource ButtonOutline}"
             Text="标记"

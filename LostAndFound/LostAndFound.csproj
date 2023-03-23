@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net7.0-android</TargetFrameworks>
+		<TargetFrameworks>net7.0-android33.0</TargetFrameworks>
 		<!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
 		<!-- <TargetFrameworks>$(TargetFrameworks);net7.0-tizen</TargetFrameworks> -->
 		<OutputType>Exe</OutputType>
@@ -23,6 +23,44 @@
 
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">11.0</SupportedOSPlatformVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
+		<Authors>ShiYuanLi</Authors>
+		<Company>Shinengine</Company>
+		<Copyright>@2023 Shinengine</Copyright>
+		<AndroidSigningKeyStore>CERT.keystore</AndroidSigningKeyStore>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0-android|AnyCPU'">
+	  <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
+	  <AndroidUseAapt2>False</AndroidUseAapt2>
+	  <AndroidCreatePackagePerAbi>True</AndroidCreatePackagePerAbi>
+	  <AndroidKeyStore>True</AndroidKeyStore>
+	  <ApplicationId></ApplicationId>
+	  <RunAOTCompilation>False</RunAOTCompilation>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0-android|AnyCPU'">
+	  <AndroidUseAapt2>False</AndroidUseAapt2>
+	  <AndroidCreatePackagePerAbi>True</AndroidCreatePackagePerAbi>
+	  <AndroidKeyStore>True</AndroidKeyStore>
+	  <PublishTrimmed>False</PublishTrimmed>
+	  <RunAOTCompilation>False</RunAOTCompilation>
+	  <ApplicationId></ApplicationId>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0-android33.0|AnyCPU'">
+	  <RunAOTCompilation>False</RunAOTCompilation>
+	  <PublishTrimmed>False</PublishTrimmed>
+	  <AndroidKeyStore>True</AndroidKeyStore>
+	  <AndroidSigningStorePass>761834925</AndroidSigningStorePass>
+	  <AndroidSigningKeyAlias>CERT</AndroidSigningKeyAlias>
+	  <AndroidSigningKeyPass>761834925</AndroidSigningKeyPass>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0-android33.0|AnyCPU'">
+	  <AndroidKeyStore>True</AndroidKeyStore>
+	  <AndroidSigningStorePass>761834925</AndroidSigningStorePass>
+	  <AndroidSigningKeyAlias>CERT</AndroidSigningKeyAlias>
+	  <AndroidSigningKeyPass>761834925</AndroidSigningKeyPass>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -44,8 +82,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\Images\Background.png" />
 	  <None Remove="Resources\Images\bottom_bar.png" />
 	  <None Remove="Resources\Images\demo_qr.png" />
+	  <None Remove="Resources\Images\find.png" />
+	  <None Remove="Resources\Images\plus.png" />
+	  <None Remove="Resources\Images\refresh.png" />
 	</ItemGroup>
 
 	<ItemGroup>

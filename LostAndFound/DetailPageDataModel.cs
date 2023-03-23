@@ -1,4 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,5 +21,28 @@ namespace LostAndFound
 
         [ObservableProperty]
         public ImageSource icon;
+
+        [RelayCommand]
+        async void OnClaim()
+        {
+            //name
+            for (int i = 0; i < MainPageDataModel.Instance.itemInfos.Count; i++)
+            {
+                if (MainPageDataModel.Instance.itemInfos[i].Name == this.Name)
+                {
+                    MainPageDataModel.Instance.itemInfos.RemoveAt(i);
+                    break;
+                }
+            }
+
+            await ClientMobel.GetReply(new DataStructure()
+            {
+                Command = 1,
+                Name = "Items",
+                Payload = JsonConvert.SerializeObject(MainPageDataModel.Instance.itemInfos)
+            });
+
+            await DetailPage.Instance.Navigation.PopAsync();
+        }
     }
 }

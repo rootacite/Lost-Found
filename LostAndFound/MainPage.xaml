@@ -7,38 +7,47 @@
              >
 
     <Grid
-        RowDefinitions="45, 1.5, *,45,10"
-        ColumnDefinitions=".18*, .64*, .18*"
-        RowSpacing="8"
+        RowDefinitions="45, 45, 1.5, *,45,10"
+        ColumnDefinitions=".18*, .22*, .42*, .18*"
+        RowSpacing="5"
         ColumnSpacing="8"
-        Padding="10">
+        Padding="10"
+        >
+
+        <Image Grid.ColumnSpan="4" Grid.RowSpan="6" BackgroundColor="Transparent" Source="background.png" Opacity="0.35"/>
+
+        <Frame Grid.Row="0" Grid.ColumnSpan="2" Padding="0" BorderColor="Transparent" BackgroundColor="Transparent" WidthRequest="200">
+            <Label Text="   最新动态" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="32" FontAttributes="Bold" FontFamily="黑体"/>
+        </Frame>
 
         <Entry 
             Placeholder="搜索描述或标题" 
-            Grid.Row="0"
+            Grid.Row="1"
             Grid.Column="0"
-            Grid.ColumnSpan="2"
+            Grid.ColumnSpan="3"
             Text="{Binding EntryText1}"
             />
 
         <Button 
             Style="{StaticResource ButtonOutline}"
             Text="搜索"
-            Grid.Row="0"
-            Grid.Column="2"
+            Grid.Row="1"
+            Grid.Column="3"
           
             />
 
 
         <Image
-            Grid.Row="1"
-            Grid.ColumnSpan="3"
-            BackgroundColor="Gray"/>
+            Grid.Row="2"
+            Grid.ColumnSpan="4"
+            BackgroundColor="#EEEEEE"
+            />
 
             <CollectionView 
-            Grid.Row="2"
-            Grid.RowSpan="3"
-            Grid.ColumnSpan="3"
+                BackgroundColor="Transparent"
+            Grid.Row="3"
+            Grid.RowSpan="4"
+            Grid.ColumnSpan="4"
             HorizontalOptions="Center"
             x:Name="CollList"
             VerticalScrollBarVisibility="Never"
@@ -48,6 +57,7 @@
                     <DataTemplate x:DataType="d:ItemInfo">
                         <Grid Padding="5">
                             <Frame HeightRequest="125"
+                                   WidthRequest="230"
                                Padding="0"
                                Style="{StaticResource CardView}">
 
@@ -59,13 +69,16 @@
                                 </Frame.GestureRecognizers>
                                 <Grid ColumnDefinitions="125,*">
 
-
-                                    <Image 
+                                <Frame>
+                                    <Image
                                         Source="{Binding Icon}"
                                         Aspect="AspectFill"
-                                        WidthRequest="125"
-                                        HeightRequest="125"
+                                        WidthRequest="115"
+                                        HeightRequest="115"
                                         />
+
+                                </Frame>
+
 
                                     <VerticalStackLayout Grid.Column="1"
                                                      Padding="10"
@@ -84,12 +97,15 @@
                 </CollectionView.ItemTemplate>
 
             </CollectionView>
-      
-        <Grid Padding="8,0" Grid.ColumnSpan="3" Grid.Row="3" BackgroundColor="Transparent">
 
-            <Image Source="bottom_bar.png" Opacity="0.65" HorizontalOptions="Center"/>
-            <Button Text="刷新" WidthRequest="60" Margin="-200,0,0,0" Command="{Binding FreshCommand}"/>
-            <Button Text="添加" WidthRequest="60" Margin="0,0,0,0"   Command="{Binding Click1Command}"/>
+        <Grid Padding="8,0" Grid.ColumnSpan="4" Grid.Row="4" Grid.RowSpan="1" BackgroundColor="Transparent" 
+              ColumnDefinitions=".1*, .99* , .1*">
+            <Grid Grid.Column="1">
+                <Image Source="bottom_bar.png" WidthRequest="250" HeightRequest="55" Aspect="Fill"/>
+                <Button ImageSource="refresh.png"  WidthRequest="45" Margin="-180,0,0,0" BackgroundColor="Transparent" Command="{Binding FreshCommand}"/>
+                <Button ImageSource="plus.png" Margin="0,0,0,0" WidthRequest="45" BackgroundColor="Transparent" Command="{Binding Click1Command}"/>
+                <Button ImageSource="find.png" Margin="180,0,0,0" WidthRequest="45" BackgroundColor="Transparent"/>
+            </Grid>
         </Grid>
 
     </Grid>
