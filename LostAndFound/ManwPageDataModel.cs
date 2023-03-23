@@ -72,19 +72,26 @@ namespace LostAndFound
                     Payload = Convert.ToBase64String(b_dt)
                 });
 
-                MainPageDataModel.Instance.itemInfos.Add(new ItemInfo()
-                {
-                    Icon = "http://59.110.225.239/" + TitleModel + ".jpg",
-                    Name = TitleModel,
-                    Description = DesModel
-                });
+                FileResult photo = await MediaPicker.Default.CapturePhotoAsync();
 
-                await ClientMobel.GetReply(new DataStructure()
+                if (photo != null)
                 {
-                    Command = 1,
-                    Name = "Items",
-                    Payload = JsonConvert.SerializeObject(MainPageDataModel.Instance.itemInfos)
-                });
+                    MainPageDataModel.Instance.itemInfos.Add(new ItemInfo()
+                    {
+                        Icon = "http://59.110.225.239/" + TitleModel + ".jpg",
+                        Name = TitleModel,
+                        Description = DesModel
+                    });
+
+                    await ClientMobel.GetReply(new DataStructure()
+                    {
+                        Command = 1,
+                        Name = "Items",
+                        Payload = JsonConvert.SerializeObject(MainPageDataModel.Instance.itemInfos)
+                    });
+                }
+
+                await Task.Delay(500);
             }
         }
     }

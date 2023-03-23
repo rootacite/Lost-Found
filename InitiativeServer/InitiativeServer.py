@@ -8,7 +8,7 @@ soc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 
 soc.bind(('0.0.0.0', 34420))
-soc.listen(5)
+soc.listen(10)
 
 status = False;
  
@@ -40,5 +40,5 @@ def Tcplink(sock, addr):
 while True:
     sock, addr = soc.accept()
  
-    t = threading.Thread(target=Tcplink(sock, addr), args=(sock, addr))
+    t = threading.Thread(target=Tcplink, args=(sock, addr))
     t.start()

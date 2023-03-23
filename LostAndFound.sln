@@ -13,6 +13,8 @@ Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "InitiativeServer", "Initiat
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "InitiativeClient", "InitiativeClient\InitiativeClient.pyproj", "{2563A883-D2FF-488D-B3E8-89155EBF6C34}"
 EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "InitiativeDemo", "InitiativeDemo\InitiativeDemo.pyproj", "{E84D2557-8897-40FC-B53E-9B848C125A0B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,8 @@ Global
 		{DAC1704E-3DDA-4009-9462-7EAFBB03AFE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2563A883-D2FF-488D-B3E8-89155EBF6C34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2563A883-D2FF-488D-B3E8-89155EBF6C34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E84D2557-8897-40FC-B53E-9B848C125A0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E84D2557-8897-40FC-B53E-9B848C125A0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

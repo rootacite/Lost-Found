@@ -25,24 +25,32 @@ namespace LostAndFound
         [RelayCommand]
         async void OnClaim()
         {
-            //name
-            for (int i = 0; i < MainPageDataModel.Instance.itemInfos.Count; i++)
+            FileResult photo = await MediaPicker.Default.CapturePhotoAsync();
+
+            if (photo != null)
             {
-                if (MainPageDataModel.Instance.itemInfos[i].Name == this.Name)
+                //name
+                for (int i = 0; i < MainPageDataModel.Instance.itemInfos.Count; i++)
                 {
-                    MainPageDataModel.Instance.itemInfos.RemoveAt(i);
-                    break;
+                    if (MainPageDataModel.Instance.itemInfos[i].Name == this.Name)
+                    {
+                        MainPageDataModel.Instance.itemInfos.RemoveAt(i);
+                        break;
+                    }
                 }
+
+                await ClientMobel.GetReply(new DataStructure()
+                {
+                    Command = 1,
+                    Name = "Items",
+                    Payload = JsonConvert.SerializeObject(MainPageDataModel.Instance.itemInfos)
+                });
+
+                await DetailPage.Instance.Navigation.PopAsync();
             }
 
-            await ClientMobel.GetReply(new DataStructure()
-            {
-                Command = 1,
-                Name = "Items",
-                Payload = JsonConvert.SerializeObject(MainPageDataModel.Instance.itemInfos)
-            });
-
-            await DetailPage.Instance.Navigation.PopAsync();
+            await Task.Delay(500);
+           
         }
     }
 }
