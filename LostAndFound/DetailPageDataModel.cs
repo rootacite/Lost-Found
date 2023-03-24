@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -44,6 +45,35 @@ namespace LostAndFound
                     Command = 1,
                     Name = "Items",
                     Payload = JsonConvert.SerializeObject(MainPageDataModel.Instance.itemInfos)
+                });
+                await ClientMobel.GetReply(new DataStructure()
+                {
+                    Command = 5,
+                    Name = "13019244532",
+                    Payload = "李四 230409200405062314"
+                });
+
+                _ = Task.Run(() =>
+                {
+                    try
+                    {
+                        TcpClient tcLock = new();
+                        tcLock.Connect("59.110.225.239", 34420);
+
+                        var tcStream = tcLock.GetStream();
+                        tcStream.Write(Encoding.UTF8.GetBytes("s0"));
+
+                        byte[] Buffer = new byte[8];
+
+                        tcStream.Read(Buffer, 0, 8);
+
+                        tcStream.Close();
+                        tcLock.Close();
+                    }
+                    catch (Exception)
+                    {
+
+                    }
                 });
 
                 await DetailPage.Instance.Navigation.PopAsync();

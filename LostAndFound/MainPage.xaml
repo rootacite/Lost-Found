@@ -82,12 +82,20 @@
 
                                     <VerticalStackLayout Grid.Column="1"
                                                      Padding="10"
-                                                     VerticalOptions="Center">
+                                                         Spacing="5"
+                                                     VerticalOptions="Center"
+                                                         HorizontalOptions="Center">
+                                        <Frame HeightRequest="25" Padding="0">
+                                            <Label Text="{Binding Tag}" FontFamily="黑体" FontAttributes="Bold" FontSize="18" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                                        </Frame>
                                         <Label Text="{Binding Name}"
+                                               HorizontalTextAlignment="Center"
                                            Style="{StaticResource LargeLabel}"/>
                                         <Label Text="{Binding Description}"
+                                                HorizontalTextAlignment="Center"
                                            TextColor="Gray"
-                                           Style="{StaticResource SmallLabel}"/>
+                                           Style="{StaticResource SmallLabel}"
+                                               WidthRequest="185"/>
                                     </VerticalStackLayout>
 
                                 </Grid>

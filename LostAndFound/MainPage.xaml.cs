@@ -13,6 +13,7 @@ public class ItemInfo
 
     public ImageSource Icon { get; set; }
 
+    public string Tag { get; set; }
 }
 
 public partial class MainPage : ContentPage

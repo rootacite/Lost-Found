@@ -5,6 +5,7 @@ using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -76,11 +77,26 @@ namespace LostAndFound
 
                 if (photo != null)
                 {
+                    int t_max_index = 1;
+                    foreach(var t in MainPageDataModel.Instance.itemInfos)
+                    {
+                        try
+                        {
+                            int current_index = Convert.ToInt32(t.Tag.Substring(0, t.Tag.Length - 2));
+                            if (current_index >= t_max_index) t_max_index = current_index + 1;
+                        }
+                        catch(Exception)
+                        {
+                            break;
+                        }
+                    }
+
                     MainPageDataModel.Instance.itemInfos.Add(new ItemInfo()
                     {
                         Icon = "http://59.110.225.239/" + TitleModel + ".jpg",
                         Name = TitleModel,
-                        Description = DesModel
+                        Description = DesModel,
+                        Tag = t_max_index.ToString() + "号柜"
                     });
 
                     await ClientMobel.GetReply(new DataStructure()
@@ -88,6 +104,29 @@ namespace LostAndFound
                         Command = 1,
                         Name = "Items",
                         Payload = JsonConvert.SerializeObject(MainPageDataModel.Instance.itemInfos)
+                    });
+
+                    _ = Task.Run(() =>
+                    {
+                        try
+                        {
+                            TcpClient tcLock = new();
+                            tcLock.Connect("59.110.225.239", 34420);
+
+                            var tcStream = tcLock.GetStream();
+                            tcStream.Write(Encoding.UTF8.GetBytes("s1"));
+
+                            byte[] Buffer = new byte[8];
+
+                            tcStream.Read(Buffer, 0, 8);
+
+                            tcStream.Close();
+                            tcLock.Close();
+                        }
+                        catch (Exception)
+                        {
+
+                        }
                     });
                 }
 

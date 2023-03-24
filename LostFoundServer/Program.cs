@@ -81,6 +81,11 @@ class Program
                         Console.WriteLine($"[Deleted {ds.Name} from /home/shiyuanli/host/webapps/ROOT/.]");
                         return JsonConvert.SerializeObject(new DataStructure() { Command = 0, Name = ds.Name, Payload = "Deleted" }) + "\n";
                     }
+                case 5:
+                    {
+                        Console.WriteLine($"[Gotten {ds.Payload} from {ds.Name}]");
+                        return JsonConvert.SerializeObject(new DataStructure() { Command = 0, Name = ds.Name, Payload = "Echoed" }) + "\n";
+                    }
                 default:
                     {
                         //错误的命令，抛出异常
