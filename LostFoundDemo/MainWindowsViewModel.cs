@@ -72,7 +72,7 @@ namespace LostFoundDemo
             string Reply = await _networkClient.GetReply(Data);
 
             _networkClient.DisConnect();
-            MessageBox.Show(Reply);
+            Payload = Reply;
         }
     }
 }
