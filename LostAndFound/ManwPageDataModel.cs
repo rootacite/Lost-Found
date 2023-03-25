@@ -82,7 +82,8 @@ namespace LostAndFound
                     {
                         try
                         {
-                            int current_index = Convert.ToInt32(t.Tag.Substring(0, t.Tag.Length - 2));
+                            string lv = t.Tag.Split("\n")[0].Substring(0, t.Tag.Split("\n")[0].Length - 2);
+                            int current_index = Convert.ToInt32(lv);
                             if (current_index >= t_max_index) t_max_index = current_index + 1;
                         }
                         catch(Exception)
@@ -96,7 +97,7 @@ namespace LostAndFound
                         Icon = "http://59.110.225.239/" + TitleModel + ".jpg",
                         Name = TitleModel,
                         Description = DesModel,
-                        Tag = t_max_index.ToString() + "号柜"
+                        Tag = $"{t_max_index.ToString()}号柜\n图书馆储物柜" 
                     });
 
                     await ClientMobel.GetReply(new DataStructure()

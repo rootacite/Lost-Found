@@ -47,6 +47,11 @@ namespace LostAndFound
             }
         }
 
+        [RelayCommand]
+        async void OnClickFinding()
+        {
+            await MainPage.Instance.Navigation.PushAsync(new FindingPage(), true);
+        }
 
         [RelayCommand]
         async void OnFresh()

@@ -85,17 +85,18 @@
                                                          Spacing="5"
                                                      VerticalOptions="Center"
                                                          HorizontalOptions="Center">
-                                        <Frame HeightRequest="25" Padding="0">
-                                            <Label Text="{Binding Tag}" FontFamily="黑体" FontAttributes="Bold" FontSize="18" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                                        <Frame HeightRequest="32"  WidthRequest="105" Padding="0">
+                                            <Label  WidthRequest="105"  Text="{Binding Tag}" FontFamily="黑体" FontAttributes="Bold" FontSize="14" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
                                         </Frame>
                                         <Label Text="{Binding Name}"
                                                HorizontalTextAlignment="Center"
-                                           Style="{StaticResource LargeLabel}"/>
+                                           Style="{StaticResource MediumLabel}" WidthRequest="160"/>
                                         <Label Text="{Binding Description}"
                                                 HorizontalTextAlignment="Center"
                                            TextColor="Gray"
+                                               HeightRequest="50"
                                            Style="{StaticResource SmallLabel}"
-                                               WidthRequest="185"/>
+                                               WidthRequest="175"/>
                                     </VerticalStackLayout>
 
                                 </Grid>
@@ -112,7 +113,7 @@
                 <Image Source="bottom_bar.png" WidthRequest="250" HeightRequest="55" Aspect="Fill"/>
                 <Button ImageSource="refresh.png"  WidthRequest="45" Margin="-180,0,0,0" BackgroundColor="Transparent" Command="{Binding FreshCommand}"/>
                 <Button ImageSource="plus.png" Margin="0,0,0,0" WidthRequest="45" BackgroundColor="Transparent" Command="{Binding Click1Command}"/>
-                <Button ImageSource="find.png" Margin="180,0,0,0" WidthRequest="45" BackgroundColor="Transparent"/>
+                <Button ImageSource="find.png" Margin="180,0,0,0" WidthRequest="45" BackgroundColor="Transparent" Command="{Binding ClickFindingCommand}"/>
             </Grid>
         </Grid>
 

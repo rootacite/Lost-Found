@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="LostAndFound.FindingPage"
+             xmlns:d="clr-namespace:LostAndFound"
+             x:DataType="d:FindingPageDataModel"
+             Title="FindingPage">
+    <Grid RowDefinitions="45, 1.5, *,45,10"
+        ColumnDefinitions=".18*, .22*, .42*, .18*"
+        RowSpacing="5"
+        ColumnSpacing="8"
+        Padding="10">
+
+        <Image Grid.ColumnSpan="4" Grid.RowSpan="6" BackgroundColor="Transparent" Source="background.png" Opacity="0.35"/>
+
+        <Frame Grid.Row="0" Grid.ColumnSpan="2" Padding="0" BorderColor="Transparent" BackgroundColor="Transparent" WidthRequest="200">
+            <Label Text="   寻物启事" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="32" FontAttributes="Bold" FontFamily="黑体"/>
+        </Frame>
+
+
+        <Image
+            Grid.Row="1"
+            Grid.ColumnSpan="3"
+            Grid.Column="1"
+            BackgroundColor="#DDDDDD"
+            />
+
+        <CollectionView 
+                BackgroundColor="Transparent"
+            Grid.Row="2"
+            Grid.RowSpan="4"
+            Grid.ColumnSpan="4"
+            HorizontalOptions="Center"
+            x:Name="CollList"
+            VerticalScrollBarVisibility="Never"
+            ItemsSource="{Binding itemInfos}">
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="d:ItemInfo">
+                    <Grid Padding="5">
+                        <Frame HeightRequest="125"
+                                   WidthRequest="230"
+                               Padding="0"
+                               Style="{StaticResource CardView}">
+
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer
+                                        CommandParameter="{Binding .}"
+                                        Command="{Binding Source={RelativeSource AncestorType={Type d:MainPageDataModel}}, Path=ClickItemCommand}"
+                                    />
+                            </Frame.GestureRecognizers>
+                            <Grid ColumnDefinitions="125,*">
+
+                                <Frame>
+                                    <Image
+                                        Source="{Binding Icon}"
+                                        Aspect="AspectFill"
+                                        WidthRequest="115"
+                                        HeightRequest="115"
+                                        />
+
+                                </Frame>
+
+
+                                <VerticalStackLayout Grid.Column="1"
+                                                     Padding="10"
+                                                         Spacing="5"
+                                                     VerticalOptions="Center"
+                                                         HorizontalOptions="Center">
+                                    <Frame HeightRequest="32"  WidthRequest="105" Padding="0">
+                                        <Label  WidthRequest="105"  Text="{Binding Tag}" FontFamily="黑体" FontAttributes="Bold" FontSize="14" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                                    </Frame>
+                                    <Label Text="{Binding Name}"
+                                               HorizontalTextAlignment="Center"
+                                           Style="{StaticResource MediumLabel}" WidthRequest="160"/>
+                                    <Label Text="{Binding Description}"
+                                                HorizontalTextAlignment="Center"
+                                           TextColor="Gray"
+                                               HeightRequest="50"
+                                           Style="{StaticResource SmallLabel}"
+                                               WidthRequest="175"/>
+                                </VerticalStackLayout>
+
+                            </Grid>
+                        </Frame>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+
+        </CollectionView>
+    </Grid>
+</ContentPage>
