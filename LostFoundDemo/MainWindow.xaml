@@ -19,8 +19,6 @@
         <TextBox FontSize="24" HorizontalAlignment="Left" Margin="216,61,0,0" TextWrapping="Wrap" Text="{Binding Command}" VerticalAlignment="Top" Width="250"/>
         <TextBox FontSize="24" HorizontalAlignment="Left" Margin="216,131,0,0" TextWrapping="Wrap" Text="{Binding Name}" VerticalAlignment="Top" Width="250"/>
         <TextBox FontSize="16" HorizontalAlignment="Left" Margin="216,200,0,0" TextWrapping="Wrap" Text="{Binding Payload}" VerticalAlignment="Top" Width="560" Height="200" AcceptsReturn="True" VerticalScrollBarVisibility="Visible"/>
-
-        <Button IsEnabled="{Binding ConnectEnable}" Command="{Binding ClickConnectCommand}" FontSize="20" Content="Connect" HorizontalAlignment="Left" Margin="584,58,0,0" VerticalAlignment="Top" Width="137" Height="30"/>
-        <Button Command="{Binding ClickSendCommand}" FontSize="20" Content="Send" HorizontalAlignment="Left" Margin="583,130,0,0" VerticalAlignment="Top" Width="137" Height="30"/>
+        <Button Command="{Binding ClickSendCommand}" FontSize="20" Content="Send" HorizontalAlignment="Left" Margin="583,64,0,0" VerticalAlignment="Top" Width="137" Height="30"/>
     </Grid>
 </Window>

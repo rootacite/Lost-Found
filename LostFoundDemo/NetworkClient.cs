@@ -44,7 +44,7 @@ namespace LostFoundDemo
     class NetworkClient
     {
         private readonly TcpClient tcpClient;
-        NetworkStream stream;
+        private NetworkStream stream;
         public NetworkClient()
         {
             tcpClient = new TcpClient();
@@ -56,7 +56,14 @@ namespace LostFoundDemo
             stream = tcpClient.GetStream();
         }
 
-        async public Task<string> Send(string Data)
+        public void DisConnect()
+        {
+            stream.Close();
+            tcpClient.Close();
+            tcpClient.Dispose();
+        }
+
+        async public Task<string> GetReply(string Data)
         {
             byte[] Buffer = Encoding.UTF8.GetBytes(Data + "\n");
             await stream.WriteAsync(Buffer);

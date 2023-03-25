@@ -53,27 +53,11 @@ namespace LostAndFound
                     Payload = "李四 230409200405062314"
                 });
 
-                _ = Task.Run(() =>
+                await ClientMobel.GetReply(new DataStructure()
                 {
-                    try
-                    {
-                        TcpClient tcLock = new();
-                        tcLock.Connect("59.110.225.239", 34420);
-
-                        var tcStream = tcLock.GetStream();
-                        tcStream.Write(Encoding.UTF8.GetBytes("s0"));
-
-                        byte[] Buffer = new byte[8];
-
-                        tcStream.Read(Buffer, 0, 8);
-
-                        tcStream.Close();
-                        tcLock.Close();
-                    }
-                    catch (Exception)
-                    {
-
-                    }
+                    Command = 1,
+                    Name = "Lock_1",
+                    Payload = "1"
                 });
 
                 await DetailPage.Instance.Navigation.PopAsync();

@@ -1,8 +1,7 @@
 
 #include "main.h"
-#include "usart.h"
 
-#define _ENABLE_STL
+#define _NO_STL
 
 #ifdef _NO_STL
 #include "Buffer.hpp"

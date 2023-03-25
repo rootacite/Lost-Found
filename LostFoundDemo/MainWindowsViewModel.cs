@@ -32,8 +32,6 @@ namespace LostFoundDemo
             Payload = "";
         }
 
-        private NetworkClient _networkClient = new NetworkClient();
-
         [ObservableProperty]
         string command;
 
@@ -61,20 +59,19 @@ namespace LostFoundDemo
         }
 
 
-        [RelayCommand]
-        async void OnClickConnect()
-        {
-            ConnectEnable = false;
-            await _networkClient.Connect();
-            ConnectEnable = true;
-        }
 
         [RelayCommand]
         async void OnClickSend()
         {
+
+            NetworkClient _networkClient = new NetworkClient();
+            await _networkClient.Connect();
+
             string Data = JsonConvert.SerializeObject(DataStructure);
 
-            string Reply = await _networkClient.Send(Data);
+            string Reply = await _networkClient.GetReply(Data);
+
+            _networkClient.DisConnect();
             MessageBox.Show(Reply);
         }
     }

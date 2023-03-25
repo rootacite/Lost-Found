@@ -106,27 +106,11 @@ namespace LostAndFound
                         Payload = JsonConvert.SerializeObject(MainPageDataModel.Instance.itemInfos)
                     });
 
-                    _ = Task.Run(() =>
+                    await ClientMobel.GetReply(new DataStructure()
                     {
-                        try
-                        {
-                            TcpClient tcLock = new();
-                            tcLock.Connect("59.110.225.239", 34420);
-
-                            var tcStream = tcLock.GetStream();
-                            tcStream.Write(Encoding.UTF8.GetBytes("s1"));
-
-                            byte[] Buffer = new byte[8];
-
-                            tcStream.Read(Buffer, 0, 8);
-
-                            tcStream.Close();
-                            tcLock.Close();
-                        }
-                        catch (Exception)
-                        {
-
-                        }
+                        Command = 1,
+                        Name = "Lock_1",
+                        Payload = "0"
                     });
                 }
 
