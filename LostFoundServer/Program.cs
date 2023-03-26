@@ -3,9 +3,19 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Sockets;
+using System.Text;
+using MQTTnet;
+using MQTTnet.Client;
+using MQTTnet.Protocol;
+using MQTTnet.Server;
 using Newtonsoft.Json;
 
+
+
 namespace LostFoundServer;
+
+// Main Service : 34421
+// Mqtt Service : 34420
 
 class Program
 {
@@ -32,7 +42,7 @@ class Program
                         }
 
                         var ret = Data.Get(ds.Name);
-                        Console.WriteLine($"[Gotten Item : {ds.Name}, Returned {ret}]");
+                        //Console.WriteLine($"[Gotten Item : {ds.Name}, Returned {ret}]");
                         return ret + "\n";
                     }
 
@@ -101,10 +111,74 @@ class Program
 
     private static DataManager Data = new DataManager();
     private static NetworkManager Network = new NetworkManager();
+
     public static void Main(string[] argv)
     {
         Data.Load();
         Data.Print();
+
+        ////////////////
+        ///Setup Mqtt Server
+        ///////////////
+        var options = new MqttServerOptionsBuilder()
+          
+        //Set endpoint to localhost
+        .WithDefaultEndpoint()
+        .WithDefaultEndpointPort(34420);
+        
+        var server = new MqttFactory().CreateMqttServer(options.Build());
+        
+        server.InterceptingPublishAsync += Server_InterceptingPublishAsync;
+        server.ValidatingConnectionAsync += Server_ValidatingConnectionAsync;
+        server.ClientDisconnectedAsync += Server_ClientDisconnectedAsync;
+
+        server.StartAsync();
+
+
+        ////////////////
+        ///Setup Mqtt Local Client
+        ///////////////
+
+        var mqttClient = new MqttFactory().CreateMqttClient();
+
+        var client_options = new MqttClientOptionsBuilder()
+         .WithClientId("LocalHost")
+         .WithTcpServer("127.0.0.1", 34420) // Port is optional
+         .WithCredentials("root", "07211145141919")
+        .Build();
+
+        mqttClient.ConnectAsync(client_options, CancellationToken.None);
+
+        mqttClient.ConnectedAsync += async (e) =>
+        {
+            await mqttClient.SubscribeAsync(new MqttTopicFilterBuilder().WithTopic("Sys/ServiceMsg").Build());
+        };
+
+        mqttClient.ApplicationMessageReceivedAsync += (e) =>
+        {
+
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine($"[ Message from Client ： {e.ClientId} on Topic : {e.ApplicationMessage.Topic}]");
+            Console.WriteLine($"[ \"{Encoding.UTF8.GetString(e.ApplicationMessage.Payload)}\" ]");
+            Console.ForegroundColor = ConsoleColor.White;
+                   
+            return Task.CompletedTask;
+        };
+
+        mqttClient.DisconnectedAsync += async (e) =>
+        {
+            await Task.Delay(TimeSpan.FromSeconds(5));
+
+            try
+            {
+                await mqttClient.ConnectAsync(client_options, CancellationToken.None);
+            }
+            catch
+            {
+
+            }
+        };
+
 
         Network.Packet += DataProcess;
         _ = Network.Run();
@@ -112,23 +186,59 @@ class Program
         Console.CancelKeyPress += (e, v) =>
         {
             Network.listener.Stop();
+            server.StopAsync();
+            mqttClient.Dispose();
         };
+
         while (true)
         {
-            string? mc = Console.ReadLine();
-
-            if(mc != null)
+            Thread.Sleep(1000);
+            if(!server.IsStarted)
             {
-                if (mc == "q")
-                {
-                    Network.listener.Stop();
-                }
-
-                if(mc == "p") 
-                {
-                    Data.Print();
-                }
+                server.StartAsync();
             }
         }
+    }
+    private static Task Server_ClientDisconnectedAsync(ClientDisconnectedEventArgs e)
+    {
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine($"[ Client Id : {e.ClientId} Has Disconnected from Server ]");
+        Console.ForegroundColor = ConsoleColor.White;
+
+        return Task.CompletedTask;
+    }
+
+
+    private static Task Server_ValidatingConnectionAsync(ValidatingConnectionEventArgs e)
+    {
+        if (e.Password != "07211145141919" || e.UserName != "root")
+        {
+            e.ReasonCode = MqttConnectReasonCode.NotAuthorized;
+
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine($"[ A Connection from Client : {e.ClientId} Has been Refused Because of Invalid Authentication Information ]");
+            Console.WriteLine($"[ IP Address : {e.Endpoint} ]");
+            Console.ForegroundColor = ConsoleColor.White;
+
+            return Task.FromException(new Exception("User not authorized"));
+        }
+
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine($"[ New Client : {e.ClientId} Has Connected Successfully ]");
+        Console.WriteLine($"[ IP Address : {e.Endpoint} ]");
+        Console.ForegroundColor = ConsoleColor.White;
+
+        return Task.CompletedTask;
+    }
+
+    
+    private static Task Server_InterceptingPublishAsync(InterceptingPublishEventArgs arg)
+    {
+        // Convert Payload to string
+        var payload = arg.ApplicationMessage?.Payload == null ? null : Encoding.UTF8.GetString(arg.ApplicationMessage?.Payload);
+
+        Console.WriteLine($"[ Gotten Topic : {arg.ApplicationMessage?.Topic} with {payload} ]");
+
+        return Task.CompletedTask;
     }
 }

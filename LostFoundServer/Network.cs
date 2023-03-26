@@ -70,7 +70,7 @@ class NetworkManager
                     Stream.Write(Dt);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //出现异常则放弃此客户端
                 Console.ForegroundColor = ConsoleColor.Red;
