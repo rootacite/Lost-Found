@@ -39,7 +39,7 @@
                 <DataTemplate x:DataType="d:ItemInfo">
                     <Grid Padding="5">
                         <Frame HeightRequest="125"
-                                   WidthRequest="230"
+                                   WidthRequest="300"
                                Padding="0"
                                Style="{StaticResource CardView}">
 

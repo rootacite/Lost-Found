@@ -6,7 +6,7 @@
              xmlns:d="clr-namespace:LostAndFound"
              x:DataType="d:ManwPageDataModel"
              >
-    <VerticalStackLayout  Padding="15" Spacing="8" HorizontalOptions="Center" BackgroundColor="#F5F5F5">
+    <VerticalStackLayout  Padding="15" Spacing="8" HorizontalOptions="Center" BackgroundColor="#F5F5F5" WidthRequest="350">
         <Frame>
             <Label Text="添加新的物品" FontSize="26"/>
         </Frame>

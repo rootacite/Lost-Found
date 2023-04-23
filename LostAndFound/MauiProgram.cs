@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using BarcodeScanner.Mobile;
 
 namespace LostAndFound;
 
@@ -8,15 +9,20 @@ public static class MauiProgram
 	{
 		var builder = MauiApp.CreateBuilder();
 		builder
-			.UseMauiApp<App>()
+            .UseMauiApp<App>()
 			.ConfigureFonts(fonts =>
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-			});
+			})
+             .ConfigureMauiHandlers(handlers =>
+             {
+                 // Add the handlers
+                 handlers.AddBarcodeScannerHandler();
+             });
 
 #if DEBUG
-		builder.Logging.AddDebug();
+        builder.Logging.AddDebug();
 #endif
 
 		return builder.Build();

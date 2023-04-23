@@ -72,6 +72,24 @@ namespace LostAndFound
                 var b_dt = dt.ToArray();
                 System.Diagnostics.Debug.WriteLine($"Data Length : {b_dt.Length}");
 
+                /////////////////////////////////////////////////////
+
+                var inj_scan = new QRCodeScanner();
+                await ManwPage.Instance.Navigation.PushAsync(inj_scan, false);
+                string res = await inj_scan.WaitResult();
+                await ManwPage.Instance.Navigation.PopAsync();
+                await Task.Delay(500);
+                
+
+                MainPageDataModel.Instance.itemInfos.Add(new ItemInfo()
+                {
+                    Icon = "http://59.110.225.239/" + TitleModel + ".jpg",
+                    Name = TitleModel,
+                    Description = DesModel,
+                    Tag = res
+                });
+
+
                 var reply = await ClientMobel.GetReply(new DataStructure()
                 {
                     Command = 2,
@@ -79,49 +97,15 @@ namespace LostAndFound
                     Payload = Convert.ToBase64String(b_dt)
                 });
 
-                FileResult photo = await MediaPicker.Default.CapturePhotoAsync();
-
-                if (photo != null)
+                await ClientMobel.GetReply(new DataStructure()
                 {
-                    int t_max_index = 1;
-                    foreach(var t in MainPageDataModel.Instance.itemInfos)
-                    {
-                        try
-                        {
-                            string lv = t.Tag.Split("\n")[0].Substring(0, t.Tag.Split("\n")[0].Length - 2);
-                            int current_index = Convert.ToInt32(lv);
-                            if (current_index >= t_max_index) t_max_index = current_index + 1;
-                        }
-                        catch(Exception)
-                        {
-                            break;
-                        }
-                    }
+                    Command = 1,
+                    Name = "Items",
+                    Payload = JsonConvert.SerializeObject(MainPageDataModel.Instance.itemInfos)
+                });
 
-                    MainPageDataModel.Instance.itemInfos.Add(new ItemInfo()
-                    {
-                        Icon = "http://59.110.225.239/" + TitleModel + ".jpg",
-                        Name = TitleModel,
-                        Description = DesModel,
-                        Tag = $"{t_max_index.ToString()}号柜\n图书馆储物柜" 
-                    });
 
-                    await ClientMobel.GetReply(new DataStructure()
-                    {
-                        Command = 1,
-                        Name = "Items",
-                        Payload = JsonConvert.SerializeObject(MainPageDataModel.Instance.itemInfos)
-                    });
 
-                    await ClientMobel.GetReply(new DataStructure()
-                    {
-                        Command = 1,
-                        Name = "Lock_1",
-                        Payload = "0"
-                    });
-                }
-
-                await Task.Delay(500);
             }
         }
     }

@@ -1,4 +1,6 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿
+
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Newtonsoft.Json;
 using System;
@@ -31,14 +33,25 @@ namespace LostAndFound
             if (photo != null)
             {
                 //name
+
+                string filename = "";
                 for (int i = 0; i < MainPageDataModel.Instance.itemInfos.Count; i++)
                 {
                     if (MainPageDataModel.Instance.itemInfos[i].Name == this.Name)
                     {
-                        MainPageDataModel.Instance.itemInfos.RemoveAt(i);
+                        string[] fs_uri = (MainPageDataModel.Instance.itemInfos[i].Icon as UriImageSource).Uri.ToString().Split('/');
+                        filename = fs_uri[fs_uri.Length - 1];
+                        MainPageDataModel.Instance.itemInfos[i].Tag = "已领取";
                         break;
                     }
                 }
+
+                //await ClientMobel.GetReply(new DataStructure()
+                //{
+                //    Command = 4,
+                //    Name = filename,
+                //    Payload = "Delete"
+                //});
 
                 await ClientMobel.GetReply(new DataStructure()
                 {
@@ -46,13 +59,7 @@ namespace LostAndFound
                     Name = "Items",
                     Payload = JsonConvert.SerializeObject(MainPageDataModel.Instance.itemInfos)
                 });
-                await ClientMobel.GetReply(new DataStructure()
-                {
-                    Command = 5,
-                    Name = "13019244532",
-                    Payload = "李四 230409200405062314"
-                });
-
+              
                 await ClientMobel.GetReply(new DataStructure()
                 {
                     Command = 1,

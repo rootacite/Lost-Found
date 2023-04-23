@@ -56,6 +56,8 @@ namespace LostAndFound
         [RelayCommand]
         async void OnFresh()
         {
+           
+
             try
             {
                 DataStructure reply = await ClientMobel.GetReply(new DataStructure()
@@ -93,7 +95,7 @@ namespace LostAndFound
         [RelayCommand]
         async void OnClickItem(ItemInfo Info)
         {
-
+            if (Info.Tag == "已领取") return;
             //加载详情页
             var DP = new DetailPage();
             var DPD = new DetailPageDataModel();

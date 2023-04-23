@@ -10,6 +10,7 @@ using MQTTnet.Protocol;
 using MQTTnet.Server;
 using Newtonsoft.Json;
 
+using static System.Console;
 
 
 namespace LostFoundServer;
@@ -138,7 +139,7 @@ class Program
         ////////////////
         ///Setup Mqtt Local Client
         ///////////////
-
+        /*
         var mqttClient = new MqttFactory().CreateMqttClient();
 
         var client_options = new MqttClientOptionsBuilder()
@@ -157,11 +158,11 @@ class Program
         mqttClient.ApplicationMessageReceivedAsync += (e) =>
         {
 
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine($"[ Message from Client ： {e.ClientId} on Topic : {e.ApplicationMessage.Topic}]");
-            Console.WriteLine($"[ \"{Encoding.UTF8.GetString(e.ApplicationMessage.Payload)}\" ]");
-            Console.ForegroundColor = ConsoleColor.White;
-                   
+            ForegroundColor = ConsoleColor.Cyan;
+            WriteLine($"[ Message from Client ： {e.ClientId} on Topic : {e.ApplicationMessage.Topic}]");
+            WriteLine($"[ \"{Encoding.UTF8.GetString(e.ApplicationMessage.Payload)}\" ]");
+            ForegroundColor = ConsoleColor.White;
+            
             return Task.CompletedTask;
         };
 
@@ -178,7 +179,7 @@ class Program
 
             }
         };
-
+        */
 
         Network.Packet += DataProcess;
         _ = Network.Run();
@@ -187,7 +188,7 @@ class Program
         {
             Network.listener.Stop();
             server.StopAsync();
-            mqttClient.Dispose();
+            //mqttClient.Dispose();
         };
 
         while (true)
@@ -235,9 +236,8 @@ class Program
     private static Task Server_InterceptingPublishAsync(InterceptingPublishEventArgs arg)
     {
         // Convert Payload to string
-        var payload = arg.ApplicationMessage?.Payload == null ? null : Encoding.UTF8.GetString(arg.ApplicationMessage?.Payload);
-
-        Console.WriteLine($"[ Gotten Topic : {arg.ApplicationMessage?.Topic} with {payload} ]");
+        var payload = arg.ApplicationMessage?.Payload == null ? null : Encoding.UTF8.GetString(arg.ApplicationMessage?.Payload);       
+        Console.WriteLine($"[ Gotten Topic : {arg.ApplicationMessage?.Topic} with {payload} from {arg.ClientId}]");
 
         return Task.CompletedTask;
     }

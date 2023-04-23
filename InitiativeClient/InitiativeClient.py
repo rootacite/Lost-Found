@@ -1,68 +1,57 @@
-
-from machine import *
 import time
+from machine import *
+from simple import MQTTClient
 import esp
-
 import network
 import socket
-
 import json
+
+import ubinascii
+
+freq(80000000)
+print(freq())
+
+P2 = Pin(2, Pin.OUT)
+
+WLAN = network.WLAN(network.STA_IF)  # create station interface
+WLAN.active(True)
+WLAN.connect('lishiyuan', '761834925')
+
 
 def WaitForConnection():
     while not WLAN.isconnected():
-        P2.on();
-        time.sleep(0.15);
-        P2.off();
-        time.sleep(0.15);
+        P2.on()
+        time.sleep(0.15)
+        P2.off()
+        time.sleep(0.15)
 
-freq(160000000)
-print(freq());
 
-WLAN = network.WLAN(network.STA_IF); # create station interface
-WLAN.active(True);
-WLAN.connect('lishiyuan', '761834925');
+WaitForConnection()
+print(WLAN.ifconfig()[0])
 
-P2 = Pin(2,Pin.OUT);
-P15 = Pin(15, Pin.OUT);
 
-WaitForConnection();
-print(WLAN.ifconfig()[0]);
-    
+def MqttCallBack(t: bytearray, m: bytearray):
+    print("Gotten")
+    if t.decode('utf-8') == "Sys/ServiceMsg":
+        print(m.decode('utf-8'))
+
+
 while True:
     try:
-        soc = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
-        soc.connect(('59.110.225.239', 34421));
-        
-        s_data = json.dumps({"Command" : 0, "Name" : "Lock_1", "Payload" : "NC" });
-        s_data += "\n";
-        print(s_data)
-        soc.send(s_data.encode('utf-8'));
-        dt = soc.recv(512).decode('utf-8')
-    
-        if not dt:
-            soc.close();
-            time.sleep(1);
-            continue;0
-    
-        r_data = json.loads(dt)
-        print(r_data)
-        
-        if r_data['Payload'][0] == '1':
-            P2.on();
-            P15.on();
-        else:
-            P2.off();
-            P15.off();
-    
-        soc.close();
-        time.sleep(1);
+        client = MQTTClient("my_client_id", "59.110.225.239", port=34420, user="root", password="07211145141919")
+        client.connect()
+        client.set_callback(MqttCallBack)
+        client.publish(b"Sys/ServiceMsg", b"Hre")
+        client.subscribe(b"Sys/ServiceMsg")
+
+        while True:
+            client.check_msg()
+            if not WLAN.isconnected():
+                break
     except Exception as e:
-        print(e);
-        continue;
-    
+        print(e)
+        continue
+
     if not WLAN.isconnected():
-        WaitForConnection();
-        print(WLAN.ifconfig()[0]);
-
-
-
+        WaitForConnection()
+        print(WLAN.ifconfig()[0])
