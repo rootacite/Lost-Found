@@ -54,6 +54,7 @@
 	  <AndroidSigningStorePass>761834925</AndroidSigningStorePass>
 	  <AndroidSigningKeyAlias>CERT</AndroidSigningKeyAlias>
 	  <AndroidSigningKeyPass>761834925</AndroidSigningKeyPass>
+	  <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0-android33.0|AnyCPU'">
@@ -61,6 +62,7 @@
 	  <AndroidSigningStorePass>761834925</AndroidSigningStorePass>
 	  <AndroidSigningKeyAlias>CERT</AndroidSigningKeyAlias>
 	  <AndroidSigningKeyPass>761834925</AndroidSigningKeyPass>
+	  <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
 	</PropertyGroup>
 
 	<ItemGroup>
